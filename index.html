@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="vendor/katex/katex.min.css">
 <link rel="stylesheet" href="vendor/codemirror/codemirror.css">
 <link rel="stylesheet" href="style.css">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%226%22 fill=%22%232456d6%22/%3E%3Ctext x=%2216%22 y=%2222%22 font-size=%2216%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22monospace%22%3E{}%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%226%22 fill=%22%231e88e5%22/%3E%3Ctext x=%2216%22 y=%2221%22 font-size=%2213%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22monospace%22 font-weight=%22bold%22%3E%26lt;/%26gt;%3C/text%3E%3C/svg%3E">
 <script defer src="vendor/katex/katex.min.js"></script>
 <script defer src="vendor/katex/auto-render.min.js"></script>
 <script defer src="vendor/marked.min.js"></script>
@@ -19,11 +19,50 @@
 <script type="module" src="app.js"></script>
 </head>
 <body>
-<header class="top">
-  <a href="#/" class="brand">Мэдээлэл зүйн бодлого шалгах систем 1.0</a>
-  <span class="judge-status" id="judgeStatus" title="Шалгагчийн төлөв">Шалгагч: ачаалаагүй</span>
+
+<header class="oj-nav">
+  <div class="oj-nav-inner">
+    <a href="#/" class="oj-brand">
+      <span class="oj-logo">&lt;/&gt;</span>
+      <span class="oj-brand-text">Online<b>Judge</b></span>
+    </a>
+
+    <button class="oj-burger" id="ojBurger" aria-label="Цэс" aria-expanded="false">
+      <svg viewBox="0 0 24 24" width="22" height="22"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+
+    <nav class="oj-menu" id="ojMenu">
+      <a href="#/" data-route="home">Нүүр</a>
+      <a href="#/problems" data-route="problems">Бодлогууд</a>
+      <a href="#/contests" data-route="contests">Тэмцээн</a>
+      <a href="#/courses" data-route="courses">Хичээл</a>
+      <a href="#/rating" data-route="rating">Рейтинг</a>
+      <a href="#/posts" data-route="posts">Нийтлэл</a>
+    </nav>
+
+    <div class="oj-right">
+      <a href="#/rating" class="solved" title="Бодсон бодлого"><span id="solvedCount">0</span>
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.5 2.5 5-5.5"/></svg></a>
+      <span class="judge-status oj-pill" id="judgeStatus" title="Шалгагчийн төлөв">Шалгагч: ачаалаагүй</span>
+    </div>
+  </div>
 </header>
-<main id="app"><p class="muted">Ачаалж байна…</p></main>
-<footer class="foot">"Төлөв"</footer>
+
+
+<main id="app" class="oj-main"><p class="muted">Ачаалж байна…</p></main>
+
+<footer class="foot oj-foot">Мэдээлэл зүйн бодлого шалгах систем 1.0 · МУБИС</footer>
+
+<script>
+(function () {
+  var menu = document.getElementById('ojMenu');
+  var burger = document.getElementById('ojBurger');
+  burger.addEventListener('click', function () {
+    var open = menu.classList.toggle('open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  window.addEventListener('hashchange', function () { menu.classList.remove('open'); });
+})();
+</script>
 </body>
 </html>
