@@ -1,0 +1,31 @@
+/* ===== Нүүрний hero: өнгөт дүрс, шилэн карт ===== */
+.oj-hero{position:relative;overflow:hidden}
+.oj-hero::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(circle at 12% 18%,rgba(255,255,255,.18),transparent 35%),
+    radial-gradient(circle at 88% 85%,rgba(124,58,237,.35),transparent 40%),
+    radial-gradient(circle at 92% 8%,rgba(52,211,153,.25),transparent 30%);
+}
+.oj-hero > *{position:relative}
+
+.oj-hero .oj-hero-links{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin:24px 0 30px}
+.oj-hero .oj-hero-links a{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  min-width:112px;padding:16px 22px;border-radius:16px;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  color:#fff;text-decoration:none;font-weight:500;opacity:1;
+  transition:transform .2s,background .2s,box-shadow .2s;
+}
+.oj-hero .oj-hero-links a:hover{transform:translateY(-4px);background:rgba(255,255,255,.2);box-shadow:0 12px 28px rgba(0,0,0,.2)}
+.oj-hero .hf-ic{
+  width:50px;height:50px;border-radius:14px;display:grid;place-items:center;
+  box-shadow:0 6px 16px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.4);
+  transition:transform .2s;
+}
+.oj-hero .oj-hero-links a:hover .hf-ic{transform:scale(1.08) rotate(-4deg)}
+.oj-hero .oj-hero-links .hf-ic svg{width:24px;height:24px;fill:none;stroke:#fff;margin:0}
+.oj-hero .f-problems .hf-ic{background:linear-gradient(135deg,#34d399,#059669)}
+.oj-hero .f-contests .hf-ic{background:linear-gradient(135deg,#fde047,#f97316)}
+.oj-hero .f-rating   .hf-ic{background:linear-gradient(135deg,#e879f9,#7c3aed)}
