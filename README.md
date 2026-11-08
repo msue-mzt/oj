@@ -82,3 +82,4 @@ vendor/                          — KaTeX, marked, CodeMirror (CDN-гүй аж�
 `vendor/` — KaTeX (MIT), marked (MIT), CodeMirror 5 (MIT).
 # onlinejudge_2026
 # onlinejudge_2026
+# oj
