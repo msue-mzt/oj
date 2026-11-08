@@ -83,3 +83,4 @@ vendor/                          — KaTeX, marked, CodeMirror (CDN-гүй аж�
 # onlinejudge_2026
 # onlinejudge_2026
 # oj
+# oj
