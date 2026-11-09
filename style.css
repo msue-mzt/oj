@@ -455,15 +455,15 @@ button.primary:hover { background: #1f2937; }
   background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);
   backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   color:#fff;text-decoration:none;font-weight:500;opacity:1;
-  transition:transform .2s,background .2s,box-shadow .2s;
+  transition:background .2s,box-shadow .2s;
 }
-.oj-hero .oj-hero-links a:hover{text-decoration:none;transform:translateY(-4px);background:rgba(255,255,255,.2);box-shadow:0 12px 28px rgba(0,0,0,.2)}
+.oj-hero .oj-hero-links a:hover{text-decoration:none;transform:none;background:rgba(255,255,255,.2);box-shadow:0 12px 28px rgba(0,0,0,.2)}
 .oj-hero .hf-ic{
   width:50px;height:50px;border-radius:14px;display:grid;place-items:center;
   box-shadow:0 6px 16px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.4);
   transition:transform .2s;
 }
-.oj-hero .oj-hero-links a:hover .hf-ic{transform:scale(1.08) rotate(-4deg)}
+.oj-hero .oj-hero-links a:hover .hf-ic{transform:translateY(-4px) scale(1.08) rotate(-4deg)}
 .oj-hero .oj-hero-links .hf-ic svg{width:24px;height:24px;fill:none;stroke:#fff;margin:0}
 .oj-hero .f-problems .hf-ic{background:linear-gradient(135deg,#34d399,#059669)}
 .oj-hero .f-contests .hf-ic{background:linear-gradient(135deg,#fde047,#f97316)}
