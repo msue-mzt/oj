@@ -38,6 +38,75 @@
   ]
  },
  {
+  "id": "cat-picture",
+  "title": "Муурны зураг",
+  "level": "Хялбар",
+  "tags": [
+   "анхан шат",
+   "cout"
+  ],
+  "tl": 3.0,
+  "ml": 256,
+  "checker": "tokens",
+  "samples": [
+   "01"
+  ],
+  "subtasks": [],
+  "tests": [
+   {
+    "name": "01",
+    "in": "tests/01.in",
+    "out": "tests/01.out"
+   }
+  ]
+ },
+ {
+  "id": "file-path",
+  "title": "Файлын зам",
+  "level": "Хялбар",
+  "tags": [
+   "анхан шат",
+   "cout"
+  ],
+  "tl": 3.0,
+  "ml": 256,
+  "checker": "tokens",
+  "samples": [
+   "01"
+  ],
+  "subtasks": [],
+  "tests": [
+   {
+    "name": "01",
+    "in": "tests/01.in",
+    "out": "tests/01.out"
+   }
+  ]
+ },
+ {
+  "id": "hello",
+  "title": "Анхны программ",
+  "level": "Хялбар",
+  "tags": [
+   "анхан шат",
+   "cout"
+  ],
+  "tl": 3.0,
+  "ml": 256,
+  "checker": "tokens",
+  "samples": [
+   "01"
+  ],
+  "subtasks": [],
+  "tests": [
+   {
+    "name": "01",
+    "in": "tests/01.in",
+    "out": "tests/01.out"
+   }
+  ]
+ },
+ {
   "id": "max-subarray",
   "title": "Хамгийн их дэд массив",
   "level": "Дунд",
@@ -104,6 +173,75 @@
     "name": "06",
     "in": "tests/06.in",
     "out": "tests/06.out"
+   }
+  ]
+ },
+ {
+  "id": "score-table",
+  "title": "Онооны хүснэгт",
+  "level": "Хялбар",
+  "tags": [
+   "анхан шат",
+   "cout"
+  ],
+  "tl": 3.0,
+  "ml": 256,
+  "checker": "tokens",
+  "samples": [
+   "01"
+  ],
+  "subtasks": [],
+  "tests": [
+   {
+    "name": "01",
+    "in": "tests/01.in",
+    "out": "tests/01.out"
+   }
+  ]
+ },
+ {
+  "id": "three-cities",
+  "title": "Гурван хот",
+  "level": "Хялбар",
+  "tags": [
+   "анхан шат",
+   "cout"
+  ],
+  "tl": 3.0,
+  "ml": 256,
+  "checker": "tokens",
+  "samples": [
+   "01"
+  ],
+  "subtasks": [],
+  "tests": [
+   {
+    "name": "01",
+    "in": "tests/01.in",
+    "out": "tests/01.out"
+   }
+  ]
+ },
+ {
+  "id": "year-seconds",
+  "title": "Нэг жилийн секунд",
+  "level": "Хялбар",
+  "tags": [
+   "анхан шат",
+   "cout"
+  ],
+  "tl": 3.0,
+  "ml": 256,
+  "checker": "tokens",
+  "samples": [
+   "01"
+  ],
+  "subtasks": [],
+  "tests": [
+   {
+    "name": "01",
+    "in": "tests/01.in",
+    "out": "tests/01.out"
    }
   ]
  }

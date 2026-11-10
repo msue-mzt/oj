@@ -1,4 +1,5 @@
 import { Judge } from "./judge/judge.js";
+import * as Auth from "./auth.js";
 
 const judge = new Judge("judge/");
 const app = document.getElementById("app");
@@ -28,10 +29,18 @@ const esc = (s) =>
         c
       ],
   );
+// Ахиц (оноо, код) хэрэглэгч бүрт тусдаа: нэвтэрсэн бол "bg:u:<id>:best:..." түлхүүрээр хадгална.
+// Нэвтрээгүй (зочин) үед хуучин шигээ "bg:best:..." түлхүүр ашиглана.
+const userScope = () => {
+  const u = Auth.currentUser();
+  const id = u && (u.uid || u.email);
+  return id ? "u:" + id + ":" : "";
+};
+const scoped = (k) => (/^(best|code):/.test(k) ? userScope() + k : k);
 const store = {
   get(k, d = null) {
     try {
-      const v = localStorage.getItem("bg:" + k);
+      const v = localStorage.getItem("bg:" + scoped(k));
       return v === null ? d : JSON.parse(v);
     } catch (_) {
       return d;
@@ -39,7 +48,7 @@ const store = {
   },
   set(k, v) {
     try {
-      localStorage.setItem("bg:" + k, JSON.stringify(v));
+      localStorage.setItem("bg:" + scoped(k), JSON.stringify(v));
     } catch (_) {}
   },
 };
@@ -289,6 +298,8 @@ async function renderProblem(id) {
         <div class="actions">
           <button class="primary" id="submit">Шалгах</button>
           <button id="runBtn">Ажиллуулах</button>
+          <button id="browse" title="Кодыг файлаас оруулах (.cpp)">Browse...</button>
+          <input type="file" id="codeFile" accept=".cpp,.cc,.cxx,.c,.h,.hpp,.txt,text/plain" hidden>
           <button id="reset" title="Анхны загвар руу буцаах">Шинэчлэх</button>
           <span class="muted" id="msg"></span>
         </div>
@@ -370,6 +381,28 @@ async function renderProblem(id) {
   document.getElementById("reset").onclick = () => {
     if (!confirm("Кодыг анхны загвар руу буцаах уу?")) return;
     editor ? editor.setValue(TEMPLATE) : (ta.value = TEMPLATE);
+  };
+
+  // Кодыг файлаас оруулах
+  const fileIn = document.getElementById("codeFile");
+  document.getElementById("browse").onclick = () => fileIn.click();
+  fileIn.onchange = async () => {
+    const f = fileIn.files[0];
+    fileIn.value = ""; // ижил файлыг дахин сонгож болохоор
+    if (!f) return;
+    const msg = document.getElementById("msg");
+    if (f.size > 1 << 20) {
+      msg.textContent = "Файл хэт том байна (1MB-аас их).";
+      return;
+    }
+    const text = (await f.text()).replace(/\r\n?/g, "\n");
+    if (editor) editor.setValue(text);
+    else {
+      ta.value = text;
+      store.set("code:" + p.id, text);
+    }
+    msg.textContent = f.name + " оруулсан";
+    submit(); // файлаас оруулсан кодыг шууд илгээж шалгана
   };
 
   ensureJudge().catch(() => {}); // хуудсанд ороход clang-ийг урьдчилан ачаалж эхэлнэ
@@ -811,7 +844,51 @@ async function renderRating() {
       )
       .join("");
   };
+  // Хэрэглэгчдийн хүснэгт
+  const me = userScope();
+  const bestOf = (uid, pid) => {
+    try {
+      const v = localStorage.getItem("bg:u:" + uid + ":best:" + pid);
+      return v === null ? null : JSON.parse(v);
+    } catch (_) {
+      return null;
+    }
+  };
+  const rows = Auth.listUsers()
+    .map((u) => {
+      const sc = ps.map((p) => bestOf(u.id, p.id));
+      return {
+        ...u,
+        sc,
+        ok: sc.filter((x) => x >= 100).length,
+        pts: sc.reduce((a, x) => a + (x || 0), 0),
+      };
+    })
+    .sort((a, b) => b.ok - a.ok || b.pts - a.pts || a.created - b.created);
+  const cell = (x) =>
+    x === null
+      ? `<td class="sc"></td>`
+      : `<td class="sc ${x >= 100 ? "sc-ok" : x > 0 ? "sc-part" : "sc-zero"}">${Math.round(x)}</td>`;
+  let place = 0;
+  const table = rows.length
+    ? `<div class="rank-wrap"><table class="list rank">
+      <thead><tr><th>#</th><th>Хэрэглэгч</th>${ps
+        .map((p, i) => `<th class="sc" title="${esc(p.title)}"><a href="#/p/${encodeURIComponent(p.id)}">${i + 1}</a></th>`)
+        .join("")}<th class="sc">Бодсон</th><th class="sc">Оноо</th></tr></thead>
+      <tbody>${rows
+        .map((r, i) => {
+          if (!i || r.ok !== rows[i - 1].ok || r.pts !== rows[i - 1].pts) place = i + 1;
+          return `<tr${"u:" + r.id + ":" === me ? ' class="me"' : ""}><td>${place}</td><td class="uname">${esc(r.name)}</td>${r.sc
+            .map(cell)
+            .join("")}<td class="sc"><b>${r.ok}</b></td><td class="sc">${Math.round(r.pts)}</td></tr>`;
+        })
+        .join("")}</tbody></table></div>
+      <p class="muted note">Баганын дугаар дээр хулгана аваачвал бодлогын нэр харагдана.</p>`
+    : `<p class="muted">Бүртгэлтэй хэрэглэгч алга. <a href="#/login">Бүртгүүлэх</a></p>`;
+
   app.innerHTML = `<div class="plist-wrap"><h1 class="page-title">Рейтинг</h1>
+    ${table}
+    <h2 class="sub-title">Миний ахиц</h2>
     <div class="stats">
       <div class="stat"><b>${solved.length}</b><span>Бодсон</span></div>
       <div class="stat"><b>${tried.length - solved.length}</b><span>Хэсэгчлэн</span></div>
@@ -820,12 +897,12 @@ async function renderRating() {
     </div>
     <h2 class="sub-title">Түвшнээр</h2><div class="plist pad">${group((p) => (p.level ? [p.level] : []))}</div>
     <h2 class="sub-title">Сэдвээр</h2><div class="plist pad">${group((p) => p.tags)}</div>
-    <p class="muted note">Энэ нь зөвхөн энэ хөтөч дээр хадгалагдсан таны ахиц. Бусад хэрэглэгчтэй харьцуулах рейтинг нь нэвтрэх систем (сервер) шаардана.</p>
+    <p class="muted note">Рейтинг нь зөвхөн энэ хөтөч дээр бүртгүүлсэн хэрэглэгчдийг харуулна. Бүх хэрэглэгчийг нэг рейтингт оруулахад сервер (Firebase Firestore) шаардлагатай.</p>
     <button id="resetProg" class="linkbtn">Ахицыг тэглэх</button></div>`;
   document.getElementById("resetProg").onclick = () => {
     if (!confirm("Бүх оноо, хадгалсан кодыг устгах уу?")) return;
     Object.keys(localStorage)
-      .filter((k) => k.startsWith("bg:best:") || k.startsWith("bg:code:"))
+      .filter((k) => k.startsWith("bg:" + userScope() + "best:") || k.startsWith("bg:" + userScope() + "code:"))
       .forEach((k) => localStorage.removeItem(k));
     renderRating();
     updateSolved();
@@ -896,6 +973,158 @@ function markNav(h) {
     .forEach((a) => a.classList.toggle("active", a.dataset.route === sec));
 }
 
+// ---------- нэвтрэлт ----------
+let loginReturn = "#/"; // нэвтэрсний дараа буцах хуудас
+
+function renderAuthBox(u) {
+  const box = document.getElementById("authBox");
+  if (!box) return;
+  if (!u) {
+    box.innerHTML = `<a class="login-btn" href="#/login">Нэвтрэх</a>`;
+    return;
+  }
+  const name = Auth.displayName(u);
+  const avatar = u.photoURL
+    ? `<img src="${esc(u.photoURL)}" alt="" referrerpolicy="no-referrer">`
+    : `<span>${esc(name.slice(0, 1).toUpperCase())}</span>`;
+  box.innerHTML = `
+    <button class="user-btn" id="userBtn" aria-haspopup="true" aria-expanded="false" title="${esc(u.email || name)}">
+      <span class="avatar">${avatar}</span><span class="uname">${esc(name)}</span>
+    </button>
+    <div class="user-menu" id="userMenu" hidden>
+      <div class="um-head"><b>${esc(name)}</b><span class="muted">${esc(u.email || "")}</span></div>
+      <button id="logoutBtn">Гарах</button>
+    </div>`;
+  const btn = document.getElementById("userBtn");
+  const menu = document.getElementById("userMenu");
+  btn.onclick = (e) => {
+    e.stopPropagation();
+    menu.hidden = !menu.hidden;
+    btn.setAttribute("aria-expanded", String(!menu.hidden));
+  };
+  document.getElementById("logoutBtn").onclick = async () => {
+    await Auth.logout();
+    menu.hidden = true;
+  };
+}
+document.addEventListener("click", (e) => {
+  const menu = document.getElementById("userMenu");
+  if (menu && !menu.hidden && !menu.contains(e.target)) menu.hidden = true;
+});
+
+async function renderLogin() {
+  document.title = "Нэвтрэх — Олимпиадын бэлтгэл";
+  const isLocal = Auth.authMode === "local";
+  app.innerHTML = `<div class="card auth-card"><p class="muted">Ачаалж байна…</p></div>`;
+  try {
+    await Auth.initAuth();
+  } catch (e) {
+    app.innerHTML = `<div class="card auth-card"><h1>Нэвтрэх</h1><p class="err">Firebase ачаалж чадсангүй: ${esc(e.message)}</p></div>`;
+    return;
+  }
+  const u = Auth.currentUser();
+  if (u) {
+    app.innerHTML = `<div class="card auth-card"><h1>Нэвтэрсэн байна</h1>
+      <p><b>${esc(Auth.displayName(u))}</b> <span class="muted">${esc(u.email || "")}</span></p>
+      <div class="actions"><a class="btn-link primary" href="#/problems">Бодлогууд руу</a><button id="lo">Гарах</button></div></div>`;
+    document.getElementById("lo").onclick = async () => {
+      await Auth.logout();
+      route();
+    };
+    return;
+  }
+
+  let mode = "login"; // login | register | reset
+  const draw = () => {
+    const reg = mode === "register", rst = mode === "reset";
+    app.innerHTML = `<div class="card auth-card">
+      <h1>${reg ? "Бүртгүүлэх" : rst ? "Нууц үг сэргээх" : "Нэвтрэх"}</h1>
+      ${rst || isLocal ? "" : `<button class="google-btn" id="gBtn" type="button">
+        <svg viewBox="0 0 48 48" width="18" height="18"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
+        Google-ээр ${reg ? "бүртгүүлэх" : "нэвтрэх"}</button>
+      <div class="or"><span>эсвэл</span></div>`}
+      <form id="authForm" novalidate>
+        ${reg ? `<label>Нэр<input id="fName" autocomplete="name" required></label>` : ""}
+        <label>Имэйл<input id="fEmail" type="email" autocomplete="email" required></label>
+        ${rst ? "" : `<label>Нууц үг<input id="fPass" type="password" autocomplete="${reg ? "new-password" : "current-password"}" minlength="6" required></label>`}
+        ${reg ? `<label>Нууц үг давтах<input id="fPass2" type="password" autocomplete="new-password" minlength="6" required></label>` : ""}
+        <p class="auth-msg" id="aMsg" role="status"></p>
+        <button class="primary" type="submit">${reg ? "Бүртгүүлэх" : rst ? "Сэргээх холбоос илгээх" : "Нэвтрэх"}</button>
+      </form>
+      <div class="auth-links">
+        ${mode === "login"
+          ? `${isLocal ? "<span></span>" : `<a href="#" data-m="reset">Нууц үгээ мартсан?</a>`}<span>Бүртгэлгүй юу? <a href="#" data-m="register">Бүртгүүлэх</a></span>`
+          : `<span>${reg ? "Бүртгэлтэй юу? " : ""}<a href="#" data-m="login">${reg ? "Нэвтрэх" : "&larr; Нэвтрэх рүү буцах"}</a></span>`}
+      </div>
+      ${isLocal ? `<p class="auth-note">Түр горим: бүртгэл зөвхөн энэ хөтөч дээр хадгалагдана.</p>` : ""}
+    </div>`;
+    const msg = document.getElementById("aMsg");
+    const say = (t, ok) => ((msg.textContent = t), msg.classList.toggle("ok", !!ok));
+    const done = () => (location.hash = loginReturn);
+    app.querySelectorAll("[data-m]").forEach(
+      (a) => (a.onclick = (e) => (e.preventDefault(), (mode = a.dataset.m), draw())),
+    );
+    const g = document.getElementById("gBtn");
+    if (g)
+      g.onclick = async () => {
+        try {
+          await Auth.loginGoogle();
+          done();
+        } catch (e) {
+          say(Auth.authError(e));
+        }
+      };
+    document.getElementById("authForm").onsubmit = async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("fEmail").value.trim();
+      const pass = rst ? "" : document.getElementById("fPass").value;
+      const sub = e.target.querySelector("button[type=submit]");
+      sub.disabled = true;
+      say("");
+      try {
+        if (rst) {
+          await Auth.resetPassword(email);
+          say("Нууц үг сэргээх холбоосыг имэйл рүү илгээлээ.", true);
+        } else if (reg) {
+          const name = document.getElementById("fName").value.trim();
+          if (!name) throw { message: "Нэрээ оруулна уу." };
+          if (pass !== document.getElementById("fPass2").value)
+            throw { message: "Нууц үг таарахгүй байна." };
+          await Auth.register(name, email, pass);
+          done();
+        } else {
+          await Auth.loginEmail(email, pass);
+          done();
+        }
+      } catch (err) {
+        say(Auth.authError(err));
+      } finally {
+        sub.disabled = false;
+      }
+    };
+  };
+  draw();
+}
+
+renderAuthBox(null);
+let lastScope = userScope();
+if (Auth.authEnabled) {
+  Auth.onUserChange((u) => {
+    renderAuthBox(u);
+    // хэрэглэгч солигдвол тухайн хүний ахицаар хуудсыг дахин зурна
+    if (userScope() !== lastScope) {
+      lastScope = userScope();
+      if (location.hash !== "#/login") route();
+      else updateSolved();
+    }
+  });
+  Auth.initAuth().catch((e) => console.warn("Firebase:", e));
+}
+window.addEventListener("hashchange", (e) => {
+  const prev = (e.oldURL.split("#")[1] || "/");
+  if (location.hash === "#/login" && prev !== "/login") loginReturn = "#" + prev;
+});
+
 // ---------- чиглүүлэгч ----------
 async function route() {
   const h = location.hash.replace(/^#/, "") || "/";
@@ -922,6 +1151,7 @@ async function route() {
       await renderPost(decodeURIComponent(m[1]));
     else if (h === "/posts") await renderPosts();
     else if (h === "/problems") await renderList();
+    else if (h === "/login") await renderLogin();
     else await renderHome();
   } catch (e) {
     app.innerHTML = `<pre class="celog">${esc(e.stack || e.message)}</pre>`;
