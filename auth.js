@@ -6,6 +6,7 @@ const SDK = "https://www.gstatic.com/firebasejs/10.12.2/";
 
 let auth = null; // Firebase Auth объект
 let fb = null; // firebase-auth модулийн функцууд
+let fs = null, db = null; // Firestore (оноо, рейтинг)
 let current = null; // одоогийн хэрэглэгч
 const listeners = new Set();
 let ready;
@@ -76,12 +77,16 @@ export function initAuth() {
     return (ready = Promise.resolve(current));
   }
   ready = (async () => {
-    const [{ initializeApp }, authMod] = await Promise.all([
+    const [{ initializeApp }, authMod, dbMod] = await Promise.all([
       import(SDK + "firebase-app.js"),
       import(SDK + "firebase-auth.js"),
+      import(SDK + "firebase-firestore.js"),
     ]);
     fb = authMod;
-    auth = fb.getAuth(initializeApp(firebaseConfig));
+    fs = dbMod;
+    const fapp = initializeApp(firebaseConfig);
+    auth = fb.getAuth(fapp);
+    db = fs.getFirestore(fapp);
     auth.languageCode = "mn";
     await new Promise((res) => {
       let first = true;
@@ -231,5 +236,58 @@ export async function registerUser(name, password) {
     if (e.code === "auth/email-already-in-use") fail("local/username-taken");
     throw e;
   }
+}
+
+// ---------- оноо (Firestore) ----------
+// users/{uid} = { name, best: { <бодлогын id>: оноо }, created, updated }
+// local горимд эдгээр функц юу ч хийхгүй (оноо зөвхөн localStorage-д).
+
+// Шинэ дээд оноог серверт бичнэ
+export async function saveScore(pid, score) {
+  if (authMode === "local" || !current) return;
+  await initAuth();
+  const ref = fs.doc(db, "users", current.uid);
+  await fs.setDoc(
+    ref,
+    { name: displayName(current), best: { [pid]: score }, updated: fs.serverTimestamp() },
+    { merge: true },
+  );
+}
+
+// Нэвтэрсэн хэрэглэгчийн серверт хадгалсан оноо: { pid: score } (эсвэл null)
+export async function loadMyScores() {
+  if (authMode === "local" || !current) return null;
+  await initAuth();
+  const snap = await fs.getDoc(fs.doc(db, "users", current.uid));
+  return snap.exists() ? snap.data().best || {} : {};
+}
+
+// Анх бүртгүүлэх үед users/{uid} баримт үүсгэнэ (оноогүй ч рейтингт харагдахаар)
+async function ensureUserDoc(u) {
+  const ref = fs.doc(db, "users", u.uid);
+  const snap = await fs.getDoc(ref);
+  if (!snap.exists())
+    await fs.setDoc(ref, { name: displayName(u), best: {}, created: fs.serverTimestamp() });
+}
+export async function touchUser() {
+  if (authMode === "local" || !current) return;
+  await initAuth();
+  await ensureUserDoc(current);
+}
+
+// Рейтинг: [{ id, name, created, best: { pid: score } }]
+export async function fetchRatings() {
+  if (authMode === "local") return null;
+  await initAuth();
+  const snap = await fs.getDocs(fs.collection(db, "users"));
+  return snap.docs.map((d) => {
+    const x = d.data();
+    return {
+      id: d.id,
+      name: x.name || "?",
+      created: x.created && x.created.toMillis ? x.created.toMillis() : 0,
+      best: x.best || {},
+    };
+  });
 }
 

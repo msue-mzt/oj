@@ -531,6 +531,7 @@ async function renderProblem(id) {
       if (best === null || score > best) {
         store.set("best:" + p.id, score);
         updateSolved();
+        Auth.saveScore(p.id, score).catch((e) => console.warn("Оноо серверт хадгалагдсангүй:", e));
       }
       msg.textContent = "";
       const firstBad = p.tests
@@ -854,9 +855,17 @@ async function renderRating() {
       return null;
     }
   };
-  const rows = Auth.listUsers()
+  let remote = null;
+  try {
+    remote = await Auth.fetchRatings();
+  } catch (e) {
+    console.warn("Рейтинг серверээс ирсэнгүй:", e);
+  }
+  const rows = (remote || Auth.listUsers())
     .map((u) => {
-      const sc = ps.map((p) => bestOf(u.id, p.id));
+      const sc = ps.map((p) =>
+        remote ? (u.best[p.id] === undefined ? null : u.best[p.id]) : bestOf(u.id, p.id),
+      );
       return {
         ...u,
         sc,
@@ -897,7 +906,7 @@ async function renderRating() {
     </div>
     <h2 class="sub-title">Түвшнээр</h2><div class="plist pad">${group((p) => (p.level ? [p.level] : []))}</div>
     <h2 class="sub-title">Сэдвээр</h2><div class="plist pad">${group((p) => p.tags)}</div>
-    <p class="muted note">Рейтинг нь зөвхөн энэ хөтөч дээр бүртгүүлсэн хэрэглэгчдийг харуулна. Бүх хэрэглэгчийг нэг рейтингт оруулахад сервер (Firebase Firestore) шаардлагатай.</p>
+    ${remote ? "" : `<p class="muted note">Түр горим: рейтинг нь зөвхөн энэ хөтөч дээр бүртгүүлсэн хэрэглэгчдийг харуулна. Бүх хэрэглэгчийг нэг рейтингт оруулахад Firebase тохиргоо шаардлагатай.</p>`}
     <button id="resetProg" class="linkbtn">Ахицыг тэглэх</button></div>`;
   document.getElementById("resetProg").onclick = () => {
     if (!confirm("Бүх оноо, хадгалсан кодыг устгах уу?")) return;
@@ -1099,6 +1108,28 @@ async function renderLogin() {
   draw();
 }
 
+// Нэвтэрсний дараа серверийн оноог локалтай нэгтгэнэ (их нь үлдэнэ)
+async function syncScores() {
+  try {
+    await Auth.touchUser();
+    const remote = await Auth.loadMyScores();
+    if (!remote) return;
+    const ps = await loadProblems();
+    let changed = false;
+    for (const p of ps) {
+      const l = store.get("best:" + p.id), r = remote[p.id];
+      if (r !== undefined && (l === null || r > l)) store.set("best:" + p.id, r), (changed = true);
+      else if (l !== null && (r === undefined || l > r)) await Auth.saveScore(p.id, l);
+    }
+    if (changed) {
+      updateSolved();
+      if (location.hash !== "#/login") route();
+    }
+  } catch (e) {
+    console.warn("Оноо нэгтгэж чадсангүй:", e);
+  }
+}
+
 renderAuthBox(null);
 let lastScope = userScope();
 if (Auth.authEnabled) {
@@ -1107,6 +1138,7 @@ if (Auth.authEnabled) {
     // хэрэглэгч солигдвол тухайн хүний ахицаар хуудсыг дахин зурна
     if (userScope() !== lastScope) {
       lastScope = userScope();
+      if (u) syncScores();
       if (location.hash !== "#/login") route();
       else updateSolved();
     }
