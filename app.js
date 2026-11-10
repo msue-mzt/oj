@@ -988,11 +988,11 @@ function renderAuthBox(u) {
     ? `<img src="${esc(u.photoURL)}" alt="" referrerpolicy="no-referrer">`
     : `<span>${esc(name.slice(0, 1).toUpperCase())}</span>`;
   box.innerHTML = `
-    <button class="user-btn" id="userBtn" aria-haspopup="true" aria-expanded="false" title="${esc(u.email || name)}">
+    <button class="user-btn" id="userBtn" aria-haspopup="true" aria-expanded="false" title="${esc(Auth.shownEmail(u) || name)}">
       <span class="avatar">${avatar}</span><span class="uname">${esc(name)}</span>
     </button>
     <div class="user-menu" id="userMenu" hidden>
-      <div class="um-head"><b>${esc(name)}</b><span class="muted">${esc(u.email || "")}</span></div>
+      <div class="um-head"><b>${esc(name)}</b><span class="muted">${esc(Auth.shownEmail(u))}</span></div>
       <button id="logoutBtn">Гарах</button>
     </div>`;
   const btn = document.getElementById("userBtn");
@@ -1025,7 +1025,7 @@ async function renderLogin() {
   const u = Auth.currentUser();
   if (u) {
     app.innerHTML = `<div class="card auth-card"><h1>Нэвтэрсэн байна</h1>
-      <p><b>${esc(Auth.displayName(u))}</b> <span class="muted">${esc(u.email || "")}</span></p>
+      <p><b>${esc(Auth.displayName(u))}</b> <span class="muted">${esc(Auth.shownEmail(u))}</span></p>
       <div class="actions"><a class="btn-link primary" href="#/problems">Бодлогууд руу</a><button id="lo">Гарах</button></div></div>`;
     document.getElementById("lo").onclick = async () => {
       await Auth.logout();
@@ -1034,27 +1034,26 @@ async function renderLogin() {
     return;
   }
 
-  let mode = "login"; // login | register | reset
+  let mode = "login"; // login | register
   const draw = () => {
-    const reg = mode === "register", rst = mode === "reset";
+    const reg = mode === "register";
     app.innerHTML = `<div class="card auth-card">
-      <h1>${reg ? "Бүртгүүлэх" : rst ? "Нууц үг сэргээх" : "Нэвтрэх"}</h1>
-      ${rst || isLocal ? "" : `<button class="google-btn" id="gBtn" type="button">
+      <h1>${reg ? "Бүртгүүлэх" : "Нэвтрэх"}</h1>
+      ${isLocal ? "" : `<button class="google-btn" id="gBtn" type="button">
         <svg viewBox="0 0 48 48" width="18" height="18"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>
         Google-ээр ${reg ? "бүртгүүлэх" : "нэвтрэх"}</button>
       <div class="or"><span>эсвэл</span></div>`}
       <form id="authForm" novalidate>
-        ${reg ? `<label>Нэр<input id="fName" autocomplete="name" required></label>` : ""}
-        <label>Имэйл<input id="fEmail" type="email" autocomplete="email" required></label>
-        ${rst ? "" : `<label>Нууц үг<input id="fPass" type="password" autocomplete="${reg ? "new-password" : "current-password"}" minlength="6" required></label>`}
+        <label>Хэрэглэгчийн нэр<input id="fUser" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="user01" required></label>
+        <label>Нууц үг<input id="fPass" type="password" autocomplete="${reg ? "new-password" : "current-password"}" minlength="6" required></label>
         ${reg ? `<label>Нууц үг давтах<input id="fPass2" type="password" autocomplete="new-password" minlength="6" required></label>` : ""}
         <p class="auth-msg" id="aMsg" role="status"></p>
-        <button class="primary" type="submit">${reg ? "Бүртгүүлэх" : rst ? "Сэргээх холбоос илгээх" : "Нэвтрэх"}</button>
+        <button class="primary" type="submit">${reg ? "Бүртгүүлэх" : "Нэвтрэх"}</button>
       </form>
       <div class="auth-links">
         ${mode === "login"
-          ? `${isLocal ? "<span></span>" : `<a href="#" data-m="reset">Нууц үгээ мартсан?</a>`}<span>Бүртгэлгүй юу? <a href="#" data-m="register">Бүртгүүлэх</a></span>`
-          : `<span>${reg ? "Бүртгэлтэй юу? " : ""}<a href="#" data-m="login">${reg ? "Нэвтрэх" : "&larr; Нэвтрэх рүү буцах"}</a></span>`}
+          ? `<span>Бүртгэлгүй юу? <a href="#" data-m="register">Бүртгүүлэх</a></span>`
+          : `<span>Бүртгэлтэй юу? <a href="#" data-m="login">Нэвтрэх</a></span>`}
       </div>
       ${isLocal ? `<p class="auth-note">Түр горим: бүртгэл зөвхөн энэ хөтөч дээр хадгалагдана.</p>` : ""}
     </div>`;
@@ -1076,26 +1075,20 @@ async function renderLogin() {
       };
     document.getElementById("authForm").onsubmit = async (e) => {
       e.preventDefault();
-      const email = document.getElementById("fEmail").value.trim();
-      const pass = rst ? "" : document.getElementById("fPass").value;
+      const user = document.getElementById("fUser").value;
+      const pass = document.getElementById("fPass").value;
       const sub = e.target.querySelector("button[type=submit]");
       sub.disabled = true;
       say("");
       try {
-        if (rst) {
-          await Auth.resetPassword(email);
-          say("Нууц үг сэргээх холбоосыг имэйл рүү илгээлээ.", true);
-        } else if (reg) {
-          const name = document.getElementById("fName").value.trim();
-          if (!name) throw { message: "Нэрээ оруулна уу." };
+        if (reg) {
           if (pass !== document.getElementById("fPass2").value)
             throw { message: "Нууц үг таарахгүй байна." };
-          await Auth.register(name, email, pass);
-          done();
+          await Auth.registerUser(user, pass);
         } else {
-          await Auth.loginEmail(email, pass);
-          done();
+          await Auth.loginUser(user, pass);
         }
+        done();
       } catch (err) {
         say(Auth.authError(err));
       } finally {

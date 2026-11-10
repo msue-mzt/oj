@@ -105,6 +105,9 @@ export function onUserChange(f) {
 
 export const displayName = (u) =>
   (u && (u.displayName || (u.email || "").split("@")[0])) || "";
+// Хуурамч имэйлийг (…@users.oj) хэрэглэгчид харуулахгүй
+export const shownEmail = (u) =>
+  u && u.email && u.email.includes("@") && !u.email.endsWith("@users.oj") ? u.email : "";
 
 export async function loginGoogle() {
   await initAuth();
@@ -156,6 +159,10 @@ export function authError(e) {
     "auth/popup-blocked": "Хөтөч нэвтрэх цонхыг хаасан байна. Popup-ыг зөвшөөрнө үү.",
     "auth/network-request-failed": "Сүлжээний алдаа. Интернэтээ шалгана уу.",
     "auth/unauthorized-domain": "Энэ домэйныг Firebase Console → Authentication → Settings → Authorized domains-д нэмэх хэрэгтэй.",
+    "local/no-username": "Хэрэглэгчийн нэрээ оруулна уу.",
+    "local/bad-username": "Хэрэглэгчийн нэр 3–32 тэмдэгт, зөвхөн латин үсэг, тоо, _ . - байна.",
+    "local/username-taken": "Энэ нэр бүртгэлтэй байна. Өөр нэр сонгоно уу.",
+    "local/bad-login": "Хэрэглэгчийн нэр эсвэл нууц үг буруу байна.",
     "local/no-google": "Google-ээр нэвтрэх нь Firebase тохиргоо шаардана.",
     "local/no-reset": "Нууц үг сэргээх нь Firebase тохиргоо шаардана.",
     "auth/operation-not-allowed": "Энэ нэвтрэх аргыг Firebase Console дээр идэвхжүүлээгүй байна.",
@@ -174,3 +181,55 @@ export function listUsers() {
     }));
   return current ? [{ id: current.uid, name: displayName(current), created: 0 }] : [];
 }
+
+// ---------- хэрэглэгчийн нэрээр нэвтрэх (имэйлгүй) ----------
+// Нэр: латин үсэг, тоо, _ . - (3–32 тэмдэгт). Том жижиг үсэг ялгахгүй.
+// Firebase горимд нэрийг "<нэр>@users.oj" гэсэн хуурамч имэйл болгож хадгална (имэйл илгээгдэхгүй).
+const USER_RE = /^[a-z0-9_.-]{3,32}$/;
+const FAKE_DOMAIN = "@users.oj";
+const normUser = (name) => {
+  const n = String(name || "").trim().toLowerCase();
+  if (!n) fail("local/no-username");
+  if (!USER_RE.test(n)) fail("local/bad-username");
+  return n;
+};
+
+export async function loginUser(name, password) {
+  const n = normUser(name);
+  if (!password) fail("auth/missing-password");
+  await initAuth();
+  if (authMode === "local") {
+    const u = lsGet(LS_USERS, {})[n];
+    if (!u || (await hashPass(u.salt, password)) !== u.hash) fail("local/bad-login");
+    return setLocal(localUser(n));
+  }
+  try {
+    await fb.signInWithEmailAndPassword(auth, n + FAKE_DOMAIN, password);
+  } catch (e) {
+    if (/invalid-credential|wrong-password|user-not-found/.test(e.code)) fail("local/bad-login");
+    throw e;
+  }
+}
+
+export async function registerUser(name, password) {
+  const n = normUser(name);
+  if (!password || password.length < 6) fail("auth/weak-password");
+  await initAuth();
+  if (authMode === "local") {
+    const users = lsGet(LS_USERS, {});
+    if (users[n]) fail("local/username-taken");
+    const salt = crypto.getRandomValues(new Uint32Array(4)).join("-");
+    users[n] = { name: n, salt, hash: await hashPass(salt, password), created: Date.now() };
+    lsSet(LS_USERS, users);
+    return setLocal(localUser(n));
+  }
+  try {
+    const cred = await fb.createUserWithEmailAndPassword(auth, n + FAKE_DOMAIN, password);
+    await fb.updateProfile(cred.user, { displayName: n });
+    listeners.forEach((f) => f(auth.currentUser));
+  } catch (e) {
+    if (e.code === "auth/email-already-in-use") fail("local/username-taken");
+    throw e;
+  }
+}
+
