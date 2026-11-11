@@ -608,7 +608,7 @@ async function renderHome(page = 1) {
     <section class="oj-hero">
       <div class="oj-hero-logo">&lt;/&gt;</div>
       <h1>Online<b>Judge</b></h1>
-      <p class="oj-hero-sub"><b>"ӨРСӨЛДӨӨНТ ПРОГРАМЧЛАЛ"</b>-ЫН ТӨРЛӨӨР ӨРСӨЛДӨЦГӨӨЕ.</p>
+      <p class="oj-hero-sub"><b>ӨРСӨЛДӨӨНТ ПРОГРАМЧЛАЛ</b>-ЫН ТӨРЛӨӨР ӨРСӨЛДӨЦГӨӨЕ.</p>
       <div class="oj-hero-links">
         <a href="#/problems" class="f-problems">${ICON_GRID}<span>Бодлогууд</span></a>
         <a href="#/contests" class="f-contests">${ICON_CUP}<span>Тэмцээн</span></a>

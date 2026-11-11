@@ -1,0 +1,15 @@
+{
+  "title": "Медалийн хүснэгт",
+  "tl": 1.0,
+  "ml": 256,
+  "level": "Дунд",
+  "tags": [
+    "sort",
+    "struct",
+    "comparator"
+  ],
+  "checker": "tokens",
+  "samples": [
+    "01"
+  ]
+}

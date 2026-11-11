@@ -61,6 +61,978 @@
   ]
  },
  {
+  "id": "ds-10-1",
+  "title": "Тэгш дугаартай тасалбар",
+  "level": "Хялбар",
+  "tags": [
+   "vector"
+  ],
+  "tl": 1.0,
+  "ml": 256,
+  "checker": "tokens",
+  "samples": [
+   "01",
+   "02"
+  ],
+  "subtasks": [],
+  "tests": [
+   {
+    "name": "01",
+    "in": "tests/01.in",
+    "out": "tests/01.out"
+   },
+   {
+    "name": "02",
+    "in": "tests/02.in",
+    "out": "tests/02.out"
+   },
+   {
+    "name": "03",
+    "in": "tests/03.in",
+    "out": "tests/03.out"
+   },
+   {
+    "name": "04",
+    "in": "tests/04.in",
+    "out": "tests/04.out"
+   },
+   {
+    "name": "05",
+    "in": "tests/05.in",
+    "out": "tests/05.out"
+   },
+   {
+    "name": "06",
+    "in": "tests/06.in",
+    "out": "tests/06.out"
+   },
+   {
+    "name": "07",
+    "in": "tests/07.in",
+    "out": "tests/07.out"
+   },
+   {
+    "name": "08",
+    "in": "tests/08.in",
+    "out": "tests/08.out"
+   },
+   {
+    "name": "09",
+    "in": "tests/09.in",
+    "out": "tests/09.out"
+   },
+   {
+    "name": "10",
+    "in": "tests/10.in",
+    "out": "tests/10.out"
+   }
+  ]
+ },
+ {
+  "id": "ds-10-2",
+  "title": "Давхардалгүй жагсаалт",
+  "level": "Хялбар",
+  "tags": [
+   "vector",
+   "unique"
+  ],
+  "tl": 1.0,
+  "ml": 256,
+  "checker": "tokens",
+  "samples": [
+   "01",
+   "02"
+  ],
+  "subtasks": [],
+  "tests": [
+   {
+    "name": "01",
+    "in": "tests/01.in",
+    "out": "tests/01.out"
+   },
+   {
+    "name": "02",
+    "in": "tests/02.in",
+    "out": "tests/02.out"
+   },
+   {
+    "name": "03",
+    "in": "tests/03.in",
+    "out": "tests/03.out"
+   },
+   {
+    "name": "04",
+    "in": "tests/04.in",
+    "out": "tests/04.out"
+   },
+   {
+    "name": "05",
+    "in": "tests/05.in",
+    "out": "tests/05.out"
+   },
+   {
+    "name": "06",
+    "in": "tests/06.in",
+    "out": "tests/06.out"
+   },
+   {
+    "name": "07",
+    "in": "tests/07.in",
+    "out": "tests/07.out"
+   },
+   {
+    "name": "08",
+    "in": "tests/08.in",
+    "out": "tests/08.out"
+   },
+   {
+    "name": "09",
+    "in": "tests/09.in",
+    "out": "tests/09.out"
+   },
+   {
+    "name": "10",
+    "in": "tests/10.in",
+    "out": "tests/10.out"
+   }
+  ]
+ },
+ {
+  "id": "ds-10-3",
+  "title": "Газрын зураг дээрх цэгүүд",
+  "level": "Хялбар",
+  "tags": [
+   "sort",
+   "pair"
+  ],
+  "tl": 1.0,
+  "ml": 256,
+  "checker": "tokens",
+  "samples": [
+   "01"
+  ],
+  "subtasks": [],
+  "tests": [
+   {
+    "name": "01",
+    "in": "tests/01.in",
+    "out": "tests/01.out"
+   },
+   {
+    "name": "02",
+    "in": "tests/02.in",
+    "out": "tests/02.out"
+   },
+   {
+    "name": "03",
+    "in": "tests/03.in",
+    "out": "tests/03.out"
+   },
+   {
+    "name": "04",
+    "in": "tests/04.in",
+    "out": "tests/04.out"
+   },
+   {
+    "name": "05",
+    "in": "tests/05.in",
+    "out": "tests/05.out"
+   },
+   {
+    "name": "06",
+    "in": "tests/06.in",
+    "out": "tests/06.out"
+   },
+   {
+    "name": "07",
+    "in": "tests/07.in",
+    "out": "tests/07.out"
+   },
+   {
+    "name": "08",
+    "in": "tests/08.in",
+    "out": "tests/08.out"
+   },
+   {
+    "name": "09",
+    "in": "tests/09.in",
+    "out": "tests/09.out"
+   },
+   {
+    "name": "10",
+    "in": "tests/10.in",
+    "out": "tests/10.out"
+   }
+  ]
+ },
+ {
+  "id": "ds-10-4",
+  "title": "Хоёр эгнээ",
+  "level": "Хялбар",
+  "tags": [
+   "merge",
+   "хоёр заагч"
+  ],
+  "tl": 1.0,
+  "ml": 256,
+  "checker": "tokens",
+  "samples": [
+   "01"
+  ],
+  "subtasks": [],
+  "tests": [
+   {
+    "name": "01",
+    "in": "tests/01.in",
+    "out": "tests/01.out"
+   },
+   {
+    "name": "02",
+    "in": "tests/02.in",
+    "out": "tests/02.out"
+   },
+   {
+    "name": "03",
+    "in": "tests/03.in",
+    "out": "tests/03.out"
+   },
+   {
+    "name": "04",
+    "in": "tests/04.in",
+    "out": "tests/04.out"
+   },
+   {
+    "name": "05",
+    "in": "tests/05.in",
+    "out": "tests/05.out"
+   },
+   {
+    "name": "06",
+    "in": "tests/06.in",
+    "out": "tests/06.out"
+   },
+   {
+    "name": "07",
+    "in": "tests/07.in",
+    "out": "tests/07.out"
+   },
+   {
+    "name": "08",
+    "in": "tests/08.in",
+    "out": "tests/08.out"
+   },
+   {
+    "name": "09",
+    "in": "tests/09.in",
+    "out": "tests/09.out"
+   },
+   {
+    "name": "10",
+    "in": "tests/10.in",
+    "out": "tests/10.out"
+   }
+  ]
+ },
+ {
+  "id": "ds-10-5",
+  "title": "Медалийн хүснэгт",
+  "level": "Дунд",
+  "tags": [
+   "sort",
+   "struct",
+   "comparator"
+  ],
+  "tl": 1.0,
+  "ml": 256,
+  "checker": "tokens",
+  "samples": [
+   "01"
+  ],
+  "subtasks": [],
+  "tests": [
+   {
+    "name": "01",
+    "in": "tests/01.in",
+    "out": "tests/01.out"
+   },
+   {
+    "name": "02",
+    "in": "tests/02.in",
+    "out": "tests/02.out"
+   },
+   {
+    "name": "03",
+    "in": "tests/03.in",
+    "out": "tests/03.out"
+   },
+   {
+    "name": "04",
+    "in": "tests/04.in",
+    "out": "tests/04.out"
+   },
+   {
+    "name": "05",
+    "in": "tests/05.in",
+    "out": "tests/05.out"
+   },
+   {
+    "name": "06",
+    "in": "tests/06.in",
+    "out": "tests/06.out"
+   },
+   {
+    "name": "07",
+    "in": "tests/07.in",
+    "out": "tests/07.out"
+   },
+   {
+    "name": "08",
+    "in": "tests/08.in",
+    "out": "tests/08.out"
+   },
+   {
+    "name": "09",
+    "in": "tests/09.in",
+    "out": "tests/09.out"
+   },
+   {
+    "name": "10",
+    "in": "tests/10.in",
+    "out": "tests/10.out"
+   }
+  ]
+ },
+ {
+  "id": "ds-10-6",
+  "title": "Тойргоос гарах тоглоом",
+  "level": "Хэцүү",
+  "tags": [
+   "математик",
+   "Иосифын бодлого"
+  ],
+  "tl": 1.0,
+  "ml": 256,
+  "checker": "tokens",
+  "samples": [
+   "01",
+   "02"
+  ],
+  "subtasks": [
+   {
+    "score": 40,
+    "name": "n ≤ 1000",
+    "tests": [
+     "01",
+     "02",
+     "03",
+     "04",
+     "05",
+     "06",
+     "07",
+     "08"
+    ]
+   },
+   {
+    "score": 60,
+    "name": "n ≤ 10⁶",
+    "tests": [
+     "01",
+     "02",
+     "03",
+     "04",
+     "05",
+     "06",
+     "07",
+     "08",
+     "09",
+     "10",
+     "11",
+     "12"
+    ]
+   }
+  ],
+  "tests": [
+   {
+    "name": "01",
+    "in": "tests/01.in",
+    "out": "tests/01.out"
+   },
+   {
+    "name": "02",
+    "in": "tests/02.in",
+    "out": "tests/02.out"
+   },
+   {
+    "name": "03",
+    "in": "tests/03.in",
+    "out": "tests/03.out"
+   },
+   {
+    "name": "04",
+    "in": "tests/04.in",
+    "out": "tests/04.out"
+   },
+   {
+    "name": "05",
+    "in": "tests/05.in",
+    "out": "tests/05.out"
+   },
+   {
+    "name": "06",
+    "in": "tests/06.in",
+    "out": "tests/06.out"
+   },
+   {
+    "name": "07",
+    "in": "tests/07.in",
+    "out": "tests/07.out"
+   },
+   {
+    "name": "08",
+    "in": "tests/08.in",
+    "out": "tests/08.out"
+   },
+   {
+    "name": "09",
+    "in": "tests/09.in",
+    "out": "tests/09.out"
+   },
+   {
+    "name": "10",
+    "in": "tests/10.in",
+    "out": "tests/10.out"
+   },
+   {
+    "name": "11",
+    "in": "tests/11.in",
+    "out": "tests/11.out"
+   },
+   {
+    "name": "12",
+    "in": "tests/12.in",
+    "out": "tests/12.out"
+   }
+  ]
+ },
+ {
+  "id": "ds-11-1",
+  "title": "Ялгаатай зочид",
+  "level": "Хялбар",
+  "tags": [
+   "set"
+  ],
+  "tl": 1.0,
+  "ml": 256,
+  "checker": "tokens",
+  "samples": [
+   "01"
+  ],
+  "subtasks": [],
+  "tests": [
+   {
+    "name": "01",
+    "in": "tests/01.in",
+    "out": "tests/01.out"
+   },
+   {
+    "name": "02",
+    "in": "tests/02.in",
+    "out": "tests/02.out"
+   },
+   {
+    "name": "03",
+    "in": "tests/03.in",
+    "out": "tests/03.out"
+   },
+   {
+    "name": "04",
+    "in": "tests/04.in",
+    "out": "tests/04.out"
+   },
+   {
+    "name": "05",
+    "in": "tests/05.in",
+    "out": "tests/05.out"
+   },
+   {
+    "name": "06",
+    "in": "tests/06.in",
+    "out": "tests/06.out"
+   },
+   {
+    "name": "07",
+    "in": "tests/07.in",
+    "out": "tests/07.out"
+   },
+   {
+    "name": "08",
+    "in": "tests/08.in",
+    "out": "tests/08.out"
+   },
+   {
+    "name": "09",
+    "in": "tests/09.in",
+    "out": "tests/09.out"
+   },
+   {
+    "name": "10",
+    "in": "tests/10.in",
+    "out": "tests/10.out"
+   }
+  ]
+ },
+ {
+  "id": "ds-11-2",
+  "title": "Хаалтын тэнцвэр",
+  "level": "Хялбар",
+  "tags": [
+   "stack"
+  ],
+  "tl": 1.0,
+  "ml": 256,
+  "checker": "tokens",
+  "samples": [
+   "01",
+   "02"
+  ],
+  "subtasks": [],
+  "tests": [
+   {
+    "name": "01",
+    "in": "tests/01.in",
+    "out": "tests/01.out"
+   },
+   {
+    "name": "02",
+    "in": "tests/02.in",
+    "out": "tests/02.out"
+   },
+   {
+    "name": "03",
+    "in": "tests/03.in",
+    "out": "tests/03.out"
+   },
+   {
+    "name": "04",
+    "in": "tests/04.in",
+    "out": "tests/04.out"
+   },
+   {
+    "name": "05",
+    "in": "tests/05.in",
+    "out": "tests/05.out"
+   },
+   {
+    "name": "06",
+    "in": "tests/06.in",
+    "out": "tests/06.out"
+   },
+   {
+    "name": "07",
+    "in": "tests/07.in",
+    "out": "tests/07.out"
+   },
+   {
+    "name": "08",
+    "in": "tests/08.in",
+    "out": "tests/08.out"
+   },
+   {
+    "name": "09",
+    "in": "tests/09.in",
+    "out": "tests/09.out"
+   },
+   {
+    "name": "10",
+    "in": "tests/10.in",
+    "out": "tests/10.out"
+   },
+   {
+    "name": "11",
+    "in": "tests/11.in",
+    "out": "tests/11.out"
+   },
+   {
+    "name": "12",
+    "in": "tests/12.in",
+    "out": "tests/12.out"
+   },
+   {
+    "name": "13",
+    "in": "tests/13.in",
+    "out": "tests/13.out"
+   },
+   {
+    "name": "14",
+    "in": "tests/14.in",
+    "out": "tests/14.out"
+   }
+  ]
+ },
+ {
+  "id": "ds-11-3",
+  "title": "Үгийн тоолуур",
+  "level": "Хялбар",
+  "tags": [
+   "map",
+   "string"
+  ],
+  "tl": 1.0,
+  "ml": 256,
+  "checker": "tokens",
+  "samples": [
+   "01"
+  ],
+  "subtasks": [],
+  "tests": [
+   {
+    "name": "01",
+    "in": "tests/01.in",
+    "out": "tests/01.out"
+   },
+   {
+    "name": "02",
+    "in": "tests/02.in",
+    "out": "tests/02.out"
+   },
+   {
+    "name": "03",
+    "in": "tests/03.in",
+    "out": "tests/03.out"
+   },
+   {
+    "name": "04",
+    "in": "tests/04.in",
+    "out": "tests/04.out"
+   },
+   {
+    "name": "05",
+    "in": "tests/05.in",
+    "out": "tests/05.out"
+   },
+   {
+    "name": "06",
+    "in": "tests/06.in",
+    "out": "tests/06.out"
+   },
+   {
+    "name": "07",
+    "in": "tests/07.in",
+    "out": "tests/07.out"
+   },
+   {
+    "name": "08",
+    "in": "tests/08.in",
+    "out": "tests/08.out"
+   },
+   {
+    "name": "09",
+    "in": "tests/09.in",
+    "out": "tests/09.out"
+   },
+   {
+    "name": "10",
+    "in": "tests/10.in",
+    "out": "tests/10.out"
+   }
+  ]
+ },
+ {
+  "id": "ds-11-4",
+  "title": "Илүү өндөр хөрш",
+  "level": "Хялбар",
+  "tags": [
+   "stack",
+   "монотон стек"
+  ],
+  "tl": 1.0,
+  "ml": 256,
+  "checker": "tokens",
+  "samples": [
+   "01"
+  ],
+  "subtasks": [
+   {
+    "score": 40,
+    "name": "n ≤ 1000",
+    "tests": [
+     "01",
+     "02",
+     "03",
+     "04",
+     "05",
+     "06",
+     "07",
+     "08"
+    ]
+   },
+   {
+    "score": 60,
+    "name": "n ≤ 5·10⁴",
+    "tests": [
+     "01",
+     "02",
+     "03",
+     "04",
+     "05",
+     "06",
+     "07",
+     "08",
+     "09",
+     "10",
+     "11",
+     "12",
+     "13"
+    ]
+   }
+  ],
+  "tests": [
+   {
+    "name": "01",
+    "in": "tests/01.in",
+    "out": "tests/01.out"
+   },
+   {
+    "name": "02",
+    "in": "tests/02.in",
+    "out": "tests/02.out"
+   },
+   {
+    "name": "03",
+    "in": "tests/03.in",
+    "out": "tests/03.out"
+   },
+   {
+    "name": "04",
+    "in": "tests/04.in",
+    "out": "tests/04.out"
+   },
+   {
+    "name": "05",
+    "in": "tests/05.in",
+    "out": "tests/05.out"
+   },
+   {
+    "name": "06",
+    "in": "tests/06.in",
+    "out": "tests/06.out"
+   },
+   {
+    "name": "07",
+    "in": "tests/07.in",
+    "out": "tests/07.out"
+   },
+   {
+    "name": "08",
+    "in": "tests/08.in",
+    "out": "tests/08.out"
+   },
+   {
+    "name": "09",
+    "in": "tests/09.in",
+    "out": "tests/09.out"
+   },
+   {
+    "name": "10",
+    "in": "tests/10.in",
+    "out": "tests/10.out"
+   },
+   {
+    "name": "11",
+    "in": "tests/11.in",
+    "out": "tests/11.out"
+   },
+   {
+    "name": "12",
+    "in": "tests/12.in",
+    "out": "tests/12.out"
+   },
+   {
+    "name": "13",
+    "in": "tests/13.in",
+    "out": "tests/13.out"
+   }
+  ]
+ },
+ {
+  "id": "ds-11-5",
+  "title": "Олс залгах",
+  "level": "Дунд",
+  "tags": [
+   "priority_queue",
+   "шунахай"
+  ],
+  "tl": 1.0,
+  "ml": 256,
+  "checker": "tokens",
+  "samples": [
+   "01"
+  ],
+  "subtasks": [],
+  "tests": [
+   {
+    "name": "01",
+    "in": "tests/01.in",
+    "out": "tests/01.out"
+   },
+   {
+    "name": "02",
+    "in": "tests/02.in",
+    "out": "tests/02.out"
+   },
+   {
+    "name": "03",
+    "in": "tests/03.in",
+    "out": "tests/03.out"
+   },
+   {
+    "name": "04",
+    "in": "tests/04.in",
+    "out": "tests/04.out"
+   },
+   {
+    "name": "05",
+    "in": "tests/05.in",
+    "out": "tests/05.out"
+   },
+   {
+    "name": "06",
+    "in": "tests/06.in",
+    "out": "tests/06.out"
+   },
+   {
+    "name": "07",
+    "in": "tests/07.in",
+    "out": "tests/07.out"
+   },
+   {
+    "name": "08",
+    "in": "tests/08.in",
+    "out": "tests/08.out"
+   },
+   {
+    "name": "09",
+    "in": "tests/09.in",
+    "out": "tests/09.out"
+   },
+   {
+    "name": "10",
+    "in": "tests/10.in",
+    "out": "tests/10.out"
+   }
+  ]
+ },
+ {
+  "id": "ds-11-6",
+  "title": "Хамгийн том зурагт хуудас",
+  "level": "Хэцүү",
+  "tags": [
+   "stack",
+   "монотон стек"
+  ],
+  "tl": 1.0,
+  "ml": 256,
+  "checker": "tokens",
+  "samples": [
+   "01"
+  ],
+  "subtasks": [
+   {
+    "score": 30,
+    "name": "n ≤ 1000",
+    "tests": [
+     "01",
+     "02",
+     "03",
+     "04",
+     "05",
+     "06",
+     "07"
+    ]
+   },
+   {
+    "score": 70,
+    "name": "n ≤ 10⁵",
+    "tests": [
+     "01",
+     "02",
+     "03",
+     "04",
+     "05",
+     "06",
+     "07",
+     "08",
+     "09",
+     "10",
+     "11",
+     "12"
+    ]
+   }
+  ],
+  "tests": [
+   {
+    "name": "01",
+    "in": "tests/01.in",
+    "out": "tests/01.out"
+   },
+   {
+    "name": "02",
+    "in": "tests/02.in",
+    "out": "tests/02.out"
+   },
+   {
+    "name": "03",
+    "in": "tests/03.in",
+    "out": "tests/03.out"
+   },
+   {
+    "name": "04",
+    "in": "tests/04.in",
+    "out": "tests/04.out"
+   },
+   {
+    "name": "05",
+    "in": "tests/05.in",
+    "out": "tests/05.out"
+   },
+   {
+    "name": "06",
+    "in": "tests/06.in",
+    "out": "tests/06.out"
+   },
+   {
+    "name": "07",
+    "in": "tests/07.in",
+    "out": "tests/07.out"
+   },
+   {
+    "name": "08",
+    "in": "tests/08.in",
+    "out": "tests/08.out"
+   },
+   {
+    "name": "09",
+    "in": "tests/09.in",
+    "out": "tests/09.out"
+   },
+   {
+    "name": "10",
+    "in": "tests/10.in",
+    "out": "tests/10.out"
+   },
+   {
+    "name": "11",
+    "in": "tests/11.in",
+    "out": "tests/11.out"
+   },
+   {
+    "name": "12",
+    "in": "tests/12.in",
+    "out": "tests/12.out"
+   }
+  ]
+ },
+ {
   "id": "file-path",
   "title": "Файлын зам",
   "level": "Хялбар",

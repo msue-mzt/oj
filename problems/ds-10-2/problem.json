@@ -1,0 +1,15 @@
+{
+  "title": "Давхардалгүй жагсаалт",
+  "tl": 1.0,
+  "ml": 256,
+  "level": "Хялбар",
+  "tags": [
+    "vector",
+    "unique"
+  ],
+  "checker": "tokens",
+  "samples": [
+    "01",
+    "02"
+  ]
+}

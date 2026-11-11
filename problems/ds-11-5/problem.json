@@ -1,0 +1,14 @@
+{
+  "title": "Олс залгах",
+  "tl": 1.0,
+  "ml": 256,
+  "level": "Дунд",
+  "tags": [
+    "priority_queue",
+    "шунахай"
+  ],
+  "checker": "tokens",
+  "samples": [
+    "01"
+  ]
+}

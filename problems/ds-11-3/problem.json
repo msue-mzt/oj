@@ -1,0 +1,14 @@
+{
+  "title": "Үгийн тоолуур",
+  "tl": 1.0,
+  "ml": 256,
+  "level": "Хялбар",
+  "tags": [
+    "map",
+    "string"
+  ],
+  "checker": "tokens",
+  "samples": [
+    "01"
+  ]
+}
